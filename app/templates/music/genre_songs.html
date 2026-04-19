@@ -1,0 +1,35 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <hgroup>
+        <h1>{{ genre.name }} Tracks</h1>
+        <p>All songs in a "{{ genre.name }}" genre.</p>
+    </hgroup>
+
+    <a href="{% url 'genre_list' %}" role="button" class="secondary outline" style="margin-bottom: 20px;">&larr; Back to Genres</a>
+
+    {% if songs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Duration</th>
+                    <th>More</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                <tr>
+                    <td><strong>{{ song.title }}</strong></td>
+                    <td>{{ song.artist }}</td>
+                    <td>{{ song.formatted_duration }}</td>
+                    <td><a href="{% url 'song_detail' song.id %}">Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>There are no songs in this genre yet.</p>
+    {% endif %}
+{% endblock %}

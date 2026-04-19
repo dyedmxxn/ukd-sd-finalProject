@@ -1,0 +1,45 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <hgroup>
+        <h1>{{ title }}</h1>
+        <p>Find your favorite songs here!</p>
+    </hgroup>
+
+    <a href="{% url 'song_create' %}" role="button" style="margin-bottom: 20px;">+ Add song</a>
+
+    {% if songs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th>Duration</th>
+                    <th>More</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                <tr>
+                    <td><strong>{{ song.title }}</strong></td>
+                    <td>{{ song.artist }}</td>
+                    <td>
+                        {% if song.genre %}
+                            <a href="{% url 'genre_songs' song.genre.id %}">
+                                {{ song.genre.name }}
+                            </a>
+                        {% else %}
+                            <small>Not specified</small>
+                        {% endif %}
+                    </td>
+                    <td>{{ song.formatted_duration }}</td>
+                    <td><a href="{% url 'song_detail' song.id %}">Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No songs yet, be the first one to add something!</p>
+    {% endif %}
+{% endblock %}

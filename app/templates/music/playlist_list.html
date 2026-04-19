@@ -1,0 +1,51 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <hgroup>
+        <h1>{{ title }}</h1>
+        <p>Find your favorite playlists here!</p>
+    </hgroup>
+
+    <a href="{% url 'playlist_create' %}" role="button" style="margin-bottom: 20px;">+ Add playlist</a>
+
+    {% if playlists %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Duration</th>
+                    <th>Access</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for playlist in playlists %}
+                <tr>
+                    <td><strong>{{ playlist.title }}</strong></td>
+                    <td>
+                        <strong>
+                        {% if playlist.top_genre %}
+                            <a href="{% url 'genre_songs' playlist.top_genre.genre__id %}">{{ playlist.top_genre.genre__name }}</a>
+                        {% else %}
+                            Mixed / Not specified
+                        {% endif %}
+                        </strong>
+                    </td>
+                    <td>{{ playlist.total_duration_formatted }}</td>
+                    <td>
+                        <strong>
+                        {% if playlist.is_public %}Public 🌍
+                        {% else %}Private 🔒
+                        {% endif %}
+                        </strong>
+                    </td>
+                    <td><a href="{% url 'playlist_detail' playlist.id %}">More</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No playlists yet, be the first one to add something!</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <article>
+        <header style=" color: #a12727;">
+            <h2>Deletion</h2>
+        </header>
+
+        <p>Are you sure you want to delete genre <strong>"{{ genre.name }}"</strong>?</p>
+        <p>You will not be able to cancel this action!</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" style="background-color: #a12727; border-color: #a12727;">Yes, delete</button>
+            <a href="{% url 'genre_detail' genre.id %}" role="button" class="secondary outline">No, cancel</a>
+        </form>
+    </article>
+{% endblock %}

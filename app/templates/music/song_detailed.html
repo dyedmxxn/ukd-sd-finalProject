@@ -1,0 +1,36 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <article>
+        <header>
+            <h2>{{ song.title }} by {{ song.artist }}</h2>
+        </header>
+
+        <ul>
+            <li><strong>Genre:</strong>
+                {% if song.genre %}
+                    <a href="{% url 'genre_songs' song.genre.id %}">{{ song.genre.name }}</a>
+                {% else %}
+                    Not specified
+                {% endif %}
+            </li>
+            <li><strong>Duration:</strong> {{ song.formatted_duration }}</li>
+            <li><strong>Availability:</strong> {% if song.is_available %}Yes ✅{% else %}No ❌{% endif %}</li>
+            <li><strong>Added:</strong> {{ song.uploaded_at|date:"d.m.Y H:i" }}</li>
+            <li><strong>Playlists:</strong>
+                {% if song.playlists.all %}
+                    {% for playlist in song.playlists.all %}
+                        <a href="{% url 'playlist_detail' playlist.id %}">{{ playlist.title }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    Not in any playlists yet
+                {% endif %}
+            </li>
+        </ul>
+
+        <footer>
+            <a href="{% url 'song_update' song.id %}" role="button" class="secondary" style="border-color: #279c25; border-width: 2px;">Modify</a>
+            <a href="{% url 'song_delete' song.id %}" role="button" class="outline" style="border-color: #a12727; border-width: 2px;">Delete</a>
+        </footer>
+    </article>
+{% endblock %}

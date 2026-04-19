@@ -1,0 +1,18 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <article>
+        <header>
+            <h2>{{ genre.name }}</h2>
+        </header>
+
+        <ul>
+            <li><strong>Description:</strong> {% if genre.description %}{{ genre.description }}{% else %}Not specified{% endif %}</li>
+        </ul>
+
+        <footer>
+            <a href="{% url 'genre_update' genre.id %}" role="button" class="secondary" style="border-color: #279c25; border-width: 2px;">Modify</a>
+            <a href="{% url 'genre_delete' genre.id %}" role="button" class="outline" style="border-color: #a12727; border-width: 2px;">Delete</a>
+        </footer>
+    </article>
+{% endblock %}

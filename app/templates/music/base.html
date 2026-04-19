@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | MusicApp</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
+    <style>
+        header { margin-bottom: 2rem; border-bottom: 1px solid #444; padding-bottom: 1rem; }
+        nav ul { padding: 0; list-style: none; display: flex; gap: 15px; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><strong>🎧 Music Platform</strong></li>
+                    <li><a href="{% url 'song_list' %}">All songs</a></li>
+                    <li><a href="{% url 'genre_list' %}">All genres</a></li>
+                    <li><a href="{% url 'playlist_list' %}">All playlists</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

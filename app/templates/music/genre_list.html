@@ -1,0 +1,37 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <hgroup>
+        <h1>{{ title }}</h1>
+        <p>Find your favorite genres here!</p>
+    </hgroup>
+
+    <a href="{% url 'genre_create' %}" role="button" style="margin-bottom: 20px;">+ Add genre</a>
+
+    {% if genres %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Songs in this genre</th>
+                    <th>More</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for genre in genres %}
+                <tr>
+                    <td><strong>{{ genre.name }}</strong></td>
+                    <td>
+                        <a href="{% url 'genre_songs' genre.id %}">
+                            {{ genre.song_set.count }}
+                        </a>
+                    </td>
+                    <td><a href="{% url 'genre_detail' genre.id %}">Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No genres yet, be the first one to add something!</p>
+    {% endif %}
+{% endblock %}
