@@ -14,7 +14,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Songs in this genre</th>
-                    <th>More</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,7 @@
                             {{ genre.song_set.count }}
                         </a>
                     </td>
-                    <td><a href="{% url 'genre_detail' genre.id %}">Details</a></td>
+                    <td><a href="{% url 'genre_detail' genre.id %}">More</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

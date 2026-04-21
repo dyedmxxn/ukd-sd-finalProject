@@ -240,3 +240,13 @@ def playlist_delete_view(request, playlist_id):
     }
 
     return render(request, 'music/playlist_confirm_delete.html', context)
+
+#Home: Main page render
+def home_view(request):
+
+    context = {
+        'title': 'Home'
+    }
+
+    return render(request, 'music/home.html', context)
+

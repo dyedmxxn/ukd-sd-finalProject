@@ -1,0 +1,30 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <article>
+        <header>
+            <h2>Log In</h2>
+        </header>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div style="margin-bottom: 15px;">
+                    {{ field.label_tag }} {{ field }}
+                    {% if field.errors %}
+                        <div style="color: red;">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit">Log in</button>
+        </form>
+        
+        <footer style="margin-top: 20px;">
+            <small>Don't have an account? <a href="{% url 'accounts:register' %}">Register here</a></small>
+        </footer>
+    </article>
+{% endblock %}

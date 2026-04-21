@@ -1,0 +1,26 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <article>
+        <header>
+            <h2>Create an Account</h2>
+        </header>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div style="margin-bottom: 15px;">
+                    {{ field.label_tag }} {{ field }}
+                    {% if field.errors %}
+                        <div style="color: red;">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit">Create account</button>
+        </form>
+    </article>
+{% endblock %}

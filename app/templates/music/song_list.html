@@ -16,7 +16,7 @@
                     <th>Artist</th>
                     <th>Genre</th>
                     <th>Duration</th>
-                    <th>More</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +34,7 @@
                         {% endif %}
                     </td>
                     <td>{{ song.formatted_duration }}</td>
-                    <td><a href="{% url 'song_detail' song.id %}">Details</a></td>
+                    <td><a href="{% url 'song_detail' song.id %}">More</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

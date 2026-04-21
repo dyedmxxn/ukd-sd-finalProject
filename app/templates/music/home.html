@@ -1,0 +1,18 @@
+{% extends 'music/base.html' %}
+
+{% block content %}
+    <article style="text-align: center; padding: 40px;">
+        <hgroup>
+            <h1>Welcome to Waveform 🎧</h1>
+            <p>Your personal library of favorite songs, genres and playlists all in one place!</p>
+        </hgroup>
+        
+        {% if not user.is_authenticated %}
+            <p>To get access to all the features of the platform, please log in or create an account.</p>
+        {% else %}
+            <div style="margin-top: 20px;">
+                <a href="{% url 'song_list' %}" role="button">Go to all songs</a>
+            </div>
+        {% endif %}
+    </article>
+{% endblock %}

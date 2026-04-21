@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} | MusicApp</title>
+    <title>{{ title }} | Waveform</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
     <style>
         header { margin-bottom: 2rem; border-bottom: 1px solid #444; padding-bottom: 1rem; }
@@ -15,10 +15,25 @@
         <header>
             <nav>
                 <ul>
-                    <li><strong>🎧 Music Platform</strong></li>
-                    <li><a href="{% url 'song_list' %}">All songs</a></li>
-                    <li><a href="{% url 'genre_list' %}">All genres</a></li>
-                    <li><a href="{% url 'playlist_list' %}">All playlists</a></li>
+                    <li><a href="{% url 'home' %}" class="contrast" style="text-decoration: none;"><strong>🎧 Waveform</strong></a></li>
+                    <li><a href="{% url 'song_list' %}" class="contrast" style="text-decoration: none;">All songs</a></li>
+                    <li><a href="{% url 'genre_list' %}" class="contrast" style="text-decoration: none;">All genres</a></li>
+                    <li><a href="{% url 'playlist_list' %}" class="contrast" style="text-decoration: none;">All playlists</a></li>
+                </ul>
+
+                <ul style="align-items: center;">
+                    {% if user.is_authenticated %}
+                        <li>Hello, <strong>{{ user.username }}</strong>!</li>
+                        <li>
+                            <form method="POST" action="{% url 'accounts:logout' %}" style="margin: 0; display: flex; align-items: center;">
+                                {% csrf_token %}
+                                <button type="submit" class="outline secondary" style="padding: 5px 15px; margin-bottom: 0; border-width: 2px;">Logout</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li><a href="{% url 'accounts:login' %}" role="button" class="outline" style="padding: 5px 15px; margin-bottom: 0;">Log in</a></li>
+                        <li><a href="{% url 'accounts:register' %}" role="button" style="padding: 5px 15px; margin-bottom: 0;">Register</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </header>
