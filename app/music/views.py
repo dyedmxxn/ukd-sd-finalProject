@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Song, Genre, Playlist
 from .forms import SongForm, GenreForm, PlaylistForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.db.models import Q
 
 #========= Song =========
 
@@ -170,7 +173,15 @@ def genre_songs_view(request, genre_id):
 
 #Playlist: Read All
 def playlist_list_view(request):
-    playlists = Playlist.objects.all()
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            playlists = Playlist.objects.all()
+        else:
+            playlists = Playlist.objects.filter(
+                Q(is_public=True) | Q(owner=request.user)
+            )
+    else:
+        playlists = Playlist.objects.filter(is_public=True)
 
     context = {
         'title': 'All playlists',
@@ -183,6 +194,9 @@ def playlist_list_view(request):
 def playlist_detail_view(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id)
 
+    if not playlist.is_public and playlist.owner != request.user and not request.user.is_staff:
+        return HttpResponseForbidden("This playlist is private and you are not its owner - access forbidden!")
+
     context = {
         'title': f'{playlist.title}',
         'playlist': playlist,
@@ -191,11 +205,15 @@ def playlist_detail_view(request, playlist_id):
     return render(request, 'music/playlist_detailed.html', context)
 
 #Playlist: Create
+@login_required
 def playlist_create_view(request):
     if request.method == 'POST':
         form = PlaylistForm(request.POST)
         if form.is_valid():
-            form.save()
+            playlist = form.save(commit=False)
+            playlist.owner = request.user
+            playlist.save()
+            form.save_m2m()
             return redirect('playlist_list')
     else:
         form = PlaylistForm()
@@ -208,8 +226,12 @@ def playlist_create_view(request):
     return render(request, 'music/playlist_form.html', context)
 
 #Playlist: Update
+@login_required
 def playlist_update_view(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id)
+
+    if playlist.owner != request.user and not request.user.is_staff:
+        return HttpResponseForbidden("You cannot modify playlist you are not an owner of!")
 
     if request.method == 'POST':
         form = PlaylistForm(request.POST, instance=playlist)
@@ -227,8 +249,12 @@ def playlist_update_view(request, playlist_id):
     return render(request, 'music/playlist_form.html', context)
 
 #Playlist: Delete
+@login_required
 def playlist_delete_view(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id)
+
+    if playlist.owner != request.user and not request.user.is_staff:
+        return HttpResponseForbidden("You cannot delete playlist you are not an owner of!")
 
     if request.method == 'POST':
         playlist.delete()

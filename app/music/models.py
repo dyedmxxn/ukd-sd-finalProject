@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Sum, Count
+from django.conf import settings
 
 class Genre(models.Model):
     name = models.CharField(max_length=100)
@@ -29,6 +30,7 @@ class Playlist(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     is_public = models.BooleanField(default=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='playlist', null=True)
     songs = models.ManyToManyField(Song, related_name='playlists', blank=True)
 
     def __str__(self):

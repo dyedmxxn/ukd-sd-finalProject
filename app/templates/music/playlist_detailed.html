@@ -7,6 +7,7 @@
         </header>
 
         <ul>
+            <li><strong>Author:</strong> {{ playlist.owner.username }}</li>
             <li><strong>Description:</strong> {{ playlist.description }}</li>
             <li><strong>Genre(only top genre is shown):</strong>
                 {% if playlist.top_genre %}
@@ -22,11 +23,12 @@
                 {% endif %}
             </li>
         </ul>
-
-        <footer>
-            <a href="{% url 'playlist_update' playlist.id %}" role="button" class="secondary" style="border-color: #279c25; border-width: 2px;">Modify</a>
-            <a href="{% url 'playlist_delete' playlist.id %}" role="button" class="outline" style="border-color: #a12727; border-width: 2px;">Delete</a>
-        </footer>
+        {% if request.user == playlist.owner or request.user.is_staff %}
+            <footer>
+                <a href="{% url 'playlist_update' playlist.id %}" role="button" class="secondary" style="border-color: #279c25; border-width: 2px;">Modify</a>
+                <a href="{% url 'playlist_delete' playlist.id %}" role="button" class="outline" style="border-color: #a12727; border-width: 2px;">Delete</a>
+            </footer>
+        {% endif %}
     </article>
 
     <h3 style="margin-top: 40px;">Songs in "{{ playlist.title }}": {{ playlist.songs.count }}</h3>

@@ -6,13 +6,16 @@
         <p>Find your favorite playlists here!</p>
     </hgroup>
 
-    <a href="{% url 'playlist_create' %}" role="button" style="margin-bottom: 20px;">+ Add playlist</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'playlist_create' %}" role="button" style="margin-bottom: 20px;">+ Add playlist</a>
+    {% endif %}
 
     {% if playlists %}
         <table>
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Author</th>
                     <th>Genre</th>
                     <th>Duration</th>
                     <th>Access</th>
@@ -23,6 +26,7 @@
                 {% for playlist in playlists %}
                 <tr>
                     <td><strong>{{ playlist.title }}</strong></td>
+                    <td><strong>{{ playlist.owner.username }}</strong></td>
                     <td>
                         <strong>
                         {% if playlist.top_genre %}
